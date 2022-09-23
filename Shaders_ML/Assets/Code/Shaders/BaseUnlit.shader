@@ -60,14 +60,52 @@ Shader "Custom/BaseUnlit"
         // SubShader configuration
 
         // Tags are labels that show how and when our shaders are processed.
-        Tags { "RenderType"="Opaque" }
+        // Unity has a processing queue called “Render Queue” which allows us to modify the processing order of objects on the GPU.
+
+        
+        // RENDER TYPE we can change from one state to another in the SubShader, adding an effect on any material that matches a given Type.
+        // Opaque. Default.
+        // Transparent.
+        // TransparentCutout.
+        // Background.
+        // Overlay.
+        // TreeOpaque.
+        // TreeTransparentCutout.
+        // TreeBillboard.
+        // Grass.
+        // GrassBillboard.
+
+        // QUEUE allows us to modify the processing order of objects on the GPU
+        //Background is used mainly for elements that are very far from the camera (e.g. skybox).
+        // Geometry is the default value in the Queue and is used for opaque objects in the scene (e.g. primitives and objects in general).
+        // AlphaTest is used on semi-transparent objects that must be in front of an opaque object, but behind a transparent object (e.g. glass, grass or vegetation).
+        // Transparent is used for transparent elements that must be in front of others.
+        // Overlay corresponds to those elements that are foremost in the scene (e.g. UI images).
+        Tags { "RenderType"="Opaque" "Queue"="Geometry" }
         LOD 100
 
+        // “Blend” is a function that requires two values called “factors” for its operation and based on an equation it will be the final color that we will obtain on-screen. 
+        // The most common types of blending are the following:
+        // • Blend SrcAlpha OneMinusSrcAlpha Common transparent blending
+        // • Blend One One Additive blending color
+        // • Blend OneMinusDstColor One Mild additive blending color
+        // • Blend DstColor Zero Multiplicative blending color
+        // • Blend DstColor SrcColor Multiplicative blending x2
+        // • Blend SrcColor One Blending overlay
+        // • Blend OneMinusSrcColor One Soft light blending
+        // • Blend Zero OneMinusSrcColor Negative color blending
+        Blend SrcAlpha OneMinusSrcAlpha
+        
+        // Each draw call that the shader performs. There can be multiple passes in a shader. Each Pass renders one object at a time, that is, if we have two passes in our shader, the object will be rendered twice on the GPU and the equivalent of that would be two draw calls. Ideally, we should use the least amount of passes possible.
         Pass
         {
             // HLSL or Cg Program
             CGPROGRAM
+
+            // The #pragma vertex vert allows the vertex shader stage called vert to be compiled to the GPU as a vertex shader
             #pragma vertex vert
+
+            // The #pragma fragment frag directive serves the same function as the pragma vertex, with the difference that it allows the fragment shader stage called “frag” to compile in the code as a fragment shader.
             #pragma fragment frag
 
             // Needed so that the toggle works. These are declared as constant. If the property is called "_Enable", this constant will be called "_ENABLE".
@@ -81,10 +119,22 @@ Shader "Custom/BaseUnlit"
             // make fog work
             #pragma multi_compile_fog
 
+            // The directive “.cginc” (Cg include) contains several files that can be used in our shader to bring in predefined variables and auxiliary functions.
             #include "UnityCG.cginc"
 
+            // We will use structs to define both inputs and outputs in our shader.
+            // Appdata corresponds to the “vertex input” and v2f refers to the “vertex output”.
+            // name : Semantic
+            // “SEMANTIC” corresponds to the semantics that we will pass as input or output.
+            // The most common semantics that we use are:
+            // POSITION[n].
+            // TEXCOORD[n].
+            // TANGENT[n].
+            // NORMAL[n].
+            // COLOR[n].
             struct appdata
             {
+                // the position of the vertices of the object in object-space
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
             };
@@ -92,10 +142,13 @@ Shader "Custom/BaseUnlit"
             struct v2f
             {
                 float2 uv : TEXCOORD0;
+                // SV_POSITION semantic, which fulfills the same function as POSITION[n], but has the prefix “SV_” (System Value).
                 float4 vertex : SV_POSITION;
             };
 
             // Connection variables are used to connect the shader variables to the shaderlab variables so that they can be used. They must have the same name in both sections so that the program recognizes them.
+
+            // “Sampler” refers to the sampling state of a texture. Within this type of data, we can store a texture and its UV coordinates.
             sampler2D _MainTex;
             float4 _Color;
 
@@ -108,6 +161,7 @@ Shader "Custom/BaseUnlit"
             v2f vert (appdata v)
             {
                 v2f o;
+                // vertices are later transformed to clip-space in the vertex shader stage through the UnityObjectToClipPos(v.vertex) function.
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
 
@@ -121,6 +175,10 @@ Shader "Custom/BaseUnlit"
                     i.uv.y *= -1;
                 #endif
 
+                // there are three Built-in Shader Variables that we will frequently use in animating properties for our effects. These refer to _Time, _SinTime, and _CosTime.
+                // i.uv.x += _Time.y;
+
+                // sampler the texture in UV coordinates using the function tex2D().
                 fixed4 col = tex2D(_MainTex, i.uv);
 
                 #if _ENABLE_ON

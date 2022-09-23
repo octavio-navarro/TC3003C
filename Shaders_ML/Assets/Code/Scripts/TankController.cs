@@ -16,7 +16,6 @@ public class TankController : MonoBehaviour
     public float shootRate = 0.5f;
 
     private float elapsedTime;
-    private Vector2 turn;
 
     void OnEndGame() {
         // Don't allow any more control changes when the game ends
@@ -36,8 +35,8 @@ public class TankController : MonoBehaviour
         UpdateWeapon();
     }
 
-    void UpdateControl() {
-        //AIMING WITH THE MOUSE
+    void UpdateControl() 
+    {
         // Generate a plane that intersects the transform's position with an upwards normal.
         Plane playerPlane = new Plane(Vector3.up, transform.position);
 
@@ -73,10 +72,13 @@ public class TankController : MonoBehaviour
         transform.Translate(Vector3.forward * Time.deltaTime * curSpeed);
     }
 
-    void UpdateWeapon() {
+    void UpdateWeapon() 
+    {
         elapsedTime += Time.deltaTime;
-        if (Input.GetMouseButtonDown(0)) {
-            if (elapsedTime >= shootRate) {
+        if (Input.GetMouseButtonDown(0)) 
+        {
+            if (elapsedTime >= shootRate) 
+            {
                 //Reset the time
                 elapsedTime = 0.0f;
 
