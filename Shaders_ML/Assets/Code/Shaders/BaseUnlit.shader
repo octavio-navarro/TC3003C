@@ -150,10 +150,13 @@ Shader "Custom/BaseUnlit"
 
             // “Sampler” refers to the sampling state of a texture. Within this type of data, we can store a texture and its UV coordinates.
             sampler2D _MainTex;
+
+            // “Float” (Cg and HLSL) is a high-precision data type, it is 32 bit and generally used in calculating positions in world-space, texture coordinates (UV), or scalar calculations involving complex functions such as trigonometry
             float4 _Color;
 
             // For the powerSlider and intRange we need connection variables
-            float _Brightness;
+            // “Half” (Cg and HLSL) is half-precision, is 16 bit and is mostly used in the calculation of low magnitude vectors, directions, object-space positions, and high dynamic range colors.
+            half _Brightness;
             int _Samples;
 
             float4 _MainTex_ST;
@@ -168,7 +171,7 @@ Shader "Custom/BaseUnlit"
                 return o;
             }
 
-            fixed4 frag (v2f i) : SV_Target
+            float4 frag (v2f i) : SV_Target
             {
                 // sample the texture
                 #if _FLIP_TEXTURE_ON
@@ -179,7 +182,7 @@ Shader "Custom/BaseUnlit"
                 // i.uv.x += _Time.y;
 
                 // sampler the texture in UV coordinates using the function tex2D().
-                fixed4 col = tex2D(_MainTex, i.uv);
+                float4 col = tex2D(_MainTex, i.uv);
 
                 #if _ENABLE_ON
                     return col * _Color;

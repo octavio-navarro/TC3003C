@@ -82,7 +82,6 @@ public class TankController : MonoBehaviour
                 //Reset the time
                 elapsedTime = 0.0f;
 
-                //Also Instantiate over the PhotonNetwork
                 Instantiate(bullet, bulletSpawnPoint.transform.position, bulletSpawnPoint.transform.rotation);
             }
         }

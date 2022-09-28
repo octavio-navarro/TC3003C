@@ -166,7 +166,7 @@ BoxCollider:
   m_GameObject: {fileID: 92511275}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -268,7 +268,7 @@ BoxCollider:
   m_GameObject: {fileID: 1323998886}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -365,7 +365,7 @@ BoxCollider:
   m_GameObject: {fileID: 1407632838}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -511,15 +511,15 @@ MonoBehaviour:
   - {fileID: 92511275}
   - {fileID: 1407632838}
   - {fileID: 1323998886}
-  curSpeed: 0
-  targetSpeed: 0
-  rotSpeed: 150
-  turretRotSpeed: 10
+  curSpeed: 2
+  rotSpeed: 3
+  turretRotSpeed: 5
   maxForwardSpeed: 30
   maxBackwardSpeed: -30
   shootRate: 0.5
-  chaseRadius: 200
-  AttackRadius: 100
+  patrolRadius: 1
+  chaseRadius: 10
+  AttackRadius: 7
 --- !u!1 &1670179327
 GameObject:
   m_ObjectHideFlags: 0
@@ -657,7 +657,7 @@ BoxCollider:
   m_GameObject: {fileID: 1703705755}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -940,6 +940,10 @@ PrefabInstance:
       value: Tank
       objectReference: {fileID: 0}
     - target: {fileID: 2271679292463979608, guid: cc3e679ee4d30b34faee6dfa905e342e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2271679292463979608, guid: cc3e679ee4d30b34faee6dfa905e342e, type: 3}
       propertyPath: m_TagString
       value: Tank
       objectReference: {fileID: 0}
@@ -949,7 +953,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2271679292463979614, guid: cc3e679ee4d30b34faee6dfa905e342e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -12.31
       objectReference: {fileID: 0}
     - target: {fileID: 2271679292463979614, guid: cc3e679ee4d30b34faee6dfa905e342e, type: 3}
       propertyPath: m_LocalPosition.y
@@ -957,7 +961,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2271679292463979614, guid: cc3e679ee4d30b34faee6dfa905e342e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 12.93
       objectReference: {fileID: 0}
     - target: {fileID: 2271679292463979614, guid: cc3e679ee4d30b34faee6dfa905e342e, type: 3}
       propertyPath: m_LocalRotation.w

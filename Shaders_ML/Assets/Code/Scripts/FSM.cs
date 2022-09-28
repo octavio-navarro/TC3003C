@@ -11,33 +11,38 @@ public class FSM : MonoBehaviour
 
     [SerializeField]
     private FSMStates currentState = FSMStates.Patrol;
+    private int health = 100;
+    private Vector3 destPos;
 
     public GameObject bullet;
     public Transform playerTransform;
     public GameObject bulletSpawnPoint;
-
     public List<GameObject> pointList;
-
-    private int health = 100;
-
-    public float curSpeed, targetSpeed;
+    public float curSpeed;
     public float rotSpeed = 150.0f;
     public float turretRotSpeed = 10.0f;
     public float maxForwardSpeed = 30.0f;
     public float maxBackwardSpeed = -30.0f;
     public float shootRate = 0.5f;
     private float elapsedTime;
-
-    public float chaseRadius = 200f;
-    public float AttackRadius = 100f;
+    public float patrolRadius = 10f;
+    public float chaseRadius = 25f;
+    public float AttackRadius = 20f;
+    private int index = -1;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        FindNextPoint();
     }
 
-    // Update is called once per frame
+    private void FindNextPoint() 
+    {
+        print("Finding next point");
+        index = (index+1)%pointList.Count; //Random.Range(0, pointList.Count);
+        destPos = pointList[index].transform.position;
+    }
+
     void Update()
     {
         switch(currentState)
@@ -66,7 +71,25 @@ public class FSM : MonoBehaviour
 
     void UpdatePatrol()
     {
+        //Find another random patrol point if the current point is reached
+        if (Vector3.Distance(transform.position, destPos) <= patrolRadius) 
+        {
+            print("Reached the destination point -- calculating the next point");
+            FindNextPoint();
+        }
+        //Check the distance with player tank, when the distance is near, transition to chase state
+        else if (Vector3.Distance(transform.position, playerTransform.position) <= chaseRadius) 
+        {
+            print("Switch to Chase state");
+            currentState = FSMStates.Chase;
+        }
 
+        //Rotate to the target point
+        Quaternion targetRotation = Quaternion.LookRotation(destPos - transform.position);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotSpeed);
+
+        //Go Forward
+        transform.Translate(Vector3.forward * Time.deltaTime * curSpeed);
     }
 
     void UpdateChase()
