@@ -47,5 +47,4 @@ public class FlockController : MonoBehaviour
 		flockCenter = center / flockSize;
 		flockVelocity = velocity / flockSize;
 	}
-    
 }
