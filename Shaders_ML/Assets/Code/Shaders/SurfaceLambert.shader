@@ -5,6 +5,7 @@ Shader "Custom/SurfaceLambert"
         _Color ("Color", Color) = (1,1,1,1)
         _MainTex ("Albedo (RGB)", 2D) = "white" {}
     }
+
     SubShader
     {
         Tags { "RenderType"="Opaque" }
@@ -28,7 +29,6 @@ Shader "Custom/SurfaceLambert"
 
         void surf (Input IN, inout SurfaceOutput o)
         {
-            // Albedo comes from a texture tinted by color
             fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
             o.Albedo = c.rgb;
             o.Alpha = c.a;
@@ -36,7 +36,7 @@ Shader "Custom/SurfaceLambert"
 
         half4 LightingSimpleLambert(SurfaceOutput s, half3 lightDir, half atten)
         {
-            half NdotL = dot(s.Normal, lightDir);
+            half NdotL = max(0, dot(s.Normal, lightDir));
             
             half4 color;
 
