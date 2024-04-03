@@ -10,6 +10,7 @@ public class HealthBar : MonoBehaviour
     void Start()
     {
         slider = GetComponent<Slider>();
+        Debug.Log(transform.parent.name + " "+ slider);
     }
 
     public void setMaxHealth(int health)

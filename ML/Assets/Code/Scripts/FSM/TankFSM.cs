@@ -74,7 +74,7 @@ public class TankFSM : MonoBehaviour
 
     private void FindNextPoint() 
     {
-        // Debug.Log("Finding next point");
+        // // Debug.Log("Finding next point");
         index = Random.Range(0, pointList.Count); //(index+1)%pointList.Count;
         destPos = pointList[index].transform.position;
     }
@@ -94,7 +94,7 @@ public class TankFSM : MonoBehaviour
         //Find another random patrol point if the current point is reached
         if (Vector3.Distance(transform.position, destPos) <= patrolRadius) 
         {
-            // Debug.Log("Reached the destination point -- calculating the next point");
+            // // Debug.Log("Reached the destination point -- calculating the next point");
             FindNextPoint();
         }
         //Check the distance with player tank, when the distance is near, transition to chase state
@@ -102,7 +102,7 @@ public class TankFSM : MonoBehaviour
         {
             if (Vector3.Distance(transform.position, playerTransform.position) <= chaseRadius) 
             {
-                // Debug.Log("Switch to Chase state");
+                // // Debug.Log("Switch to Chase state");
                 currentState = FSMStates.Chase;
             }
         }
@@ -124,11 +124,11 @@ public class TankFSM : MonoBehaviour
         float dist = Vector3.Distance(transform.position, playerTransform.position);
 
         if (dist <= attackRadius) {
-            // Debug.Log("Switch to Attack state");
+            // // Debug.Log("Switch to Attack state");
             currentState = FSMStates.Attack;
         }
         else if (dist >= chaseRadius) {
-            // Debug.Log("Switch to Patrol state");
+            // // Debug.Log("Switch to Patrol state");
             currentState = FSMStates.Patrol;
             FindNextPoint();
         }
@@ -159,7 +159,7 @@ public class TankFSM : MonoBehaviour
         }
         //Transition to patrol is the tank become too far
         if (dist >= chaseRadius) {
-            // Debug.Log("Switch to Patrol state");
+            // // Debug.Log("Switch to Patrol state");
             currentState = FSMStates.Patrol;
             FindNextPoint();
         }
@@ -170,8 +170,8 @@ public class TankFSM : MonoBehaviour
     void ShootBullet() 
     {
         elapsedTime += Time.deltaTime;
-        Debug.Log("Shoot rate: " +   shootRate);
-        Debug.Log("Elapsed Time: " + elapsedTime);
+        // Debug.Log("Shoot rate: " +   shootRate);
+        // Debug.Log("Elapsed Time: " + elapsedTime);
         if (elapsedTime >= shootRate) 
         {
             //Reset the time

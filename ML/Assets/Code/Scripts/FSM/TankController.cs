@@ -8,7 +8,7 @@ public class TankController : MonoBehaviour
     public GameObject turret;
     public GameObject bulletSpawnPoint;
 
-    [SerializeField] HealthBar healthBar;
+    public HealthBar healthBar;
 
     public float curSpeed, targetSpeed;
     public float rotSpeed = 150.0f;
